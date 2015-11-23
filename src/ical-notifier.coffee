@@ -63,7 +63,7 @@ module.exports = (robot) ->
       count = events.length
 
       if count is 0
-        robot.send room: config.room, 'You have no scheduled events tomorrow.'
+        #robot.send room: config.room, 'You have no scheduled events tomorrow.'
         return
 
       text = "You have #{count} scheduled event#{pl count} tomorrow.\n"
