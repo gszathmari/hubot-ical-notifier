@@ -20,6 +20,7 @@ moment = require('moment')
 
 config =
   room: process.env.ICAL_NOTIFIER_ROOM
+  schedule: process.env.ICAL_NOTIFIER_SCHEDULE or '0 0 21 * * *'
 
 
 registerJob = (expr, cb) ->
@@ -48,7 +49,7 @@ module.exports = (robot) ->
   getCalendarList = -> robot.brain.get('calendars') || []
   clearCalendarList = -> robot.brain.set('calendars', [])
 
-  registerJob '0 0 21 * * *', ->
+  registerJob config.schedule, ->
     cals = getCalendarList()
 
     processes = cals.map (cal) ->
