@@ -8,6 +8,7 @@
 #   hubot cal:add <url> - Add new iCal calendar
 #   hubot cal:list - Show list of registered calendars
 #   hubot cal:clear - Clear all of the registered calendars
+#   hubot cal:debug - GMT time thingy
 #
 # Author:
 #   Ryota Kameoka <kameoka.ryota@gmail.com>
@@ -40,7 +41,6 @@ getEventsFromICalURL = (url, cb) ->
 
     cb(events)
 
-
 pl = (n) ->
   if n is 1 then '' else 's'
 
@@ -70,17 +70,18 @@ module.exports = (robot) ->
       text = "You have #{count} scheduled event#{pl count} tomorrow.\n"
       text += events.map (e) ->
         location = if e.location then " @#{e.location}" else ''
-        start = e.start.format('HH:mm')
-        end = e.end.format('HH:mm')
+        start = e.start.format("dddd HH:mm a")
+        end = e.end.format("dddd HH:mm a")
+        diff = e.end - e.start
         time = if start is '00:00' and end is '00:00'
           'all day'
         else
           "#{start} - #{end}"
-        "#{e.summary}#{location} (#{time})"
+        tonow = e.start.fromNow()
+        "#{e.summary}#{location} #{tonow} from now (#{time})"
       .join "\n"
 
       robot.send { room: config.room }, text
-
 
   robot.respond /cal:add (.+)/, (msg) ->
     newCal = msg.match[1]
@@ -93,6 +94,9 @@ module.exports = (robot) ->
     text += "Now you have #{count} calendar#{pl count}."
     msg.send text
 
+  robot.respond /cal:debug/, (msg) ->
+    cdate = new Date().toGMTString()
+    msg.send "#{cdate}\n"
 
   robot.respond /cal:list/, (msg) ->
     cals = getCalendarList()
