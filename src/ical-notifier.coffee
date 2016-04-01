@@ -77,7 +77,11 @@ module.exports = (robot) ->
         else
           "#{start} - #{end}"
         tonow = e.start.fromNow()
-        "#{e.summary}#{location} #{tonow} from now (#{time})"
+        eventItem = "#{e.summary}#{location} #{tonow} from now (#{time})"
+        # Add description if exists
+        if e.description?.length isnt 0
+          eventItem += "\n_#{e.description}_"
+        return eventItem
       .join "\n"
 
       robot.send { room: config.room }, text
