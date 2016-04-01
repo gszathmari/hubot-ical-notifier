@@ -8,7 +8,6 @@
 #   hubot cal:add <url> - Add new iCal calendar
 #   hubot cal:list - Show list of registered calendars
 #   hubot cal:clear - Clear all of the registered calendars
-#   hubot cal:debug - GMT time thingy
 #
 # Author:
 #   Ryota Kameoka <kameoka.ryota@gmail.com>
@@ -93,10 +92,6 @@ module.exports = (robot) ->
     text = "New calendar has been added!\n"
     text += "Now you have #{count} calendar#{pl count}."
     msg.send text
-
-  robot.respond /cal:debug/, (msg) ->
-    cdate = new Date().toGMTString()
-    msg.send "#{cdate}\n"
 
   robot.respond /cal:list/, (msg) ->
     cals = getCalendarList()
