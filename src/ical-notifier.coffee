@@ -77,10 +77,10 @@ module.exports = (robot) ->
         else
           "#{start} - #{end}"
         tonow = e.start.fromNow()
-        eventItem = "#{e.summary}#{location} #{tonow} from now (#{time})"
+        eventItem = "\n:calendar: #{e.summary}#{location} #{tonow} from now (#{time})"
         # Add description if exists
         if e.description?.length isnt 0
-          eventItem += "\n_#{e.description}_"
+          eventItem += "\nDescription: #{e.description}"
         return eventItem
       .join "\n"
 
